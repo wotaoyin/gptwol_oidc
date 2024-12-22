@@ -2,3 +2,4 @@ Flask
 WakeOnLan
 gunicorn
 Authlib
+requests

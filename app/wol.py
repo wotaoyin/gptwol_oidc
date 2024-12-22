@@ -12,7 +12,7 @@ cron_filename = '/etc/cron.d/gptwol'
 computer_filename = 'computers.txt'
 
 app = Flask(__name__, static_folder='templates')
-app.secret_key = os.environ.get('FLASK_SECRET_KEY')
+app.secret_key = os.environ.get('FLASK_SECRET_KEY') or os.urandom(12)
 
 # -----------------------------------------------------------------------------
 # 1) Load OIDC config from oidc.txt. Ensure you limit its permission.
