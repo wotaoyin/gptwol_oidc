@@ -12,4 +12,4 @@ RUN pip install -r /app/requirements.txt
 WORKDIR /app
 
 # Start App and cron
-CMD ["/bin/bash", "-c", "systemctl enable cron --now && gunicorn --access-logfile - wol_oidc:app"]
+CMD ["/bin/bash", "-c", "systemctl enable cron --now && gunicorn --access-logfile - wol:app"]
