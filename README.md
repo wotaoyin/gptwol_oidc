@@ -1,14 +1,13 @@
-# GPTWOL a simple Wake On Lan gui
+# GPTWOL OIDC
+
+Originally forked from [gptwol by Misterbabou](https://github.com/misterbabou/gptwol), which is licensed under the [![MIT License](https://img.shields.io/github/license/Misterbabou/gptwol.svg?logo=github&logoColor=959DA5)](https://github.com/Misterbabou/gptwol/blob/main/LICENSE.md), this project adds OIDC-based user management functionality and other improvements, and is also licensed under the [MIT License](./LICENSE).
+
+# Original GPTWOL is a simple Wake-On-LAN GUI
 
 ---
 [![Docker Pulls](https://img.shields.io/docker/pulls/misterbabou/gptwol.svg?logo=docker)](https://hub.docker.com/r/misterbabou/gptwol)
-[![GitHub Release](https://img.shields.io/github/release/Misterbabou/gptwol.svg?logo=github&logoColor=959DA5)](https://github.com/Misterbabou/gptwol/releases/latest)
 [![GitHub last commit](https://img.shields.io/github/last-commit/Misterbabou/gptwol?logo=github&logoColor=959DA5)](https://github.com/Misterbabou/gptwol/commits/main)
-[![MIT Licensed](https://img.shields.io/github/license/Misterbabou/gptwol.svg?logo=github&logoColor=959DA5)](https://github.com/Misterbabou/gptwol/blob/main/LICENSE.md)
 ---
-
-GPTWOL is a simple and lightweight Wake on Lan gui made with python to wake up your computers on your LAN.
-It was made mostly by chatGPT.
 
 ## Screenshot 
 
@@ -16,6 +15,7 @@ It was made mostly by chatGPT.
 
 ## Features 
 
+Original features:
 - Docker Image to deploy
 - Send Wake On Lan packets
 - Add or Delete Computer
@@ -24,13 +24,17 @@ It was made mostly by chatGPT.
 - Check if IP and MAC provided are valid
 - cron job to wake up device
 - Check if Cron provided is valid
-- Search on cumputer Name, MAC or IP
-
-## Special configuration you can change
-
+- Search on cumputer Name, MAC, or IP
 - Ping Refresh to check Status availibility 
 - Disable Delete or Add Computers
 - Change the port of the Web UI
+
+Added features:
+- Read OpenID Connect config from environment varialbes for from oidc.txt
+- The computers.txt file now has multiple sections, one per user (e.g. [alice@example.com], [bob@example.org])
+- Each section can optionally have a hide_details flag. If it is true, we hide IP, MAC, Status Check, and the Delete button.
+- Each section can optionally have a cannot_add_computer flag. If it is true, we do not display the entire Add Computer form.
+
 
 ## Docker Configuration
 > [!NOTE]
@@ -62,6 +66,10 @@ services:
       #- DISABLE_REFRESH=1 #Uncomment this line to prevent your browser to refresh Computer status; default is to allow
       #- REFRESH_PING=15 # Uncomment this line to change ping status check, can be 15 or 60 (seconds); default value is 30 seconds
       #- PING_TIMEOUT=200 #Uncomment this line to change the time to wait for a ping answer in (in ms); default value is 300 milliseconds
+      - CLIENT_ID=  # OIDC Client ID (also known as Application ID)
+      - CLIENT_SECRET=  # OIDC Client secret (also known as Application secret)
+      - DISCOVERY_URL=  # OIDC Server's well-known URL
+      - REDIRECT_URI=http://dockerhostip:port/oidc/callback
     volumes:
       - ./computers.txt:/app/computers.txt
       - ./appdata/cron:/etc/cron.d
@@ -69,7 +77,22 @@ services:
 
 Create the file for storing computers (the mounted file on docker-compose)
 ```
-touch computers.txt
+nano computers.txt
+```
+
+Example:
+```ini
+[alice@example.org]
+COMPUTER-01,aa:aa:aa:aa:aa:aa,192.168.1.1
+COMPUTER-02,bb:bb:bb:bb:bb:bb,192.168.1.2,icmp
+
+[bob@example.org]
+COMPUTER-01,aa:aa:aa:aa:aa:aa,192.168.1.1
+cannot_add_computer = true
+
+[charles@example.org]
+COMPUTER-02,bb:bb:bb:bb:bb:bb,192.168.1.2,icmp
+hide_details = true                      
 ```
 
 Run the application
@@ -94,29 +117,5 @@ docker run -d \
   -e TZ=Europe/Paris \
   -v ./computers.txt:/app/computers.txt \
   -v ./appdata/cron:/etc/cron.d \
-  misterbabou/gptwol:latest
+  gauging/gptwol_oidc:latest
 ```
-
-## Roadmap 
-
-:heavy_check_mark: Add ARM version (Added in 1.0.1)
-
-:heavy_check_mark: Add feature to plan automatic Wake on Lan (Cron) (Added in 1.0.3)
-
-:heavy_check_mark: Add Search feature (Added in 1.0.4)
-
-:heavy_check_mark: Remove Cron on Computer deletion (Added in 1.0.4)
-
-:heavy_check_mark: Improve load page performance due to ping timeout. (added in 1.0.5)
-
-:heavy_check_mark: Add a TCP port option to check availibility without using ICMP (added in 2.0.1)
-
-:heavy_check_mark: Run app on subpath (added in 2.1.0)
-
-:heavy_check_mark: Make app responsive for smaller screen (added in 2.1.0)
-
-- Add filter buttons to filter computer by Name or IP
-
-- Add OIDC Authentication (will require time)
-
-- moove computers.txt in an other directory not to mount a file but a directory to the docker container
