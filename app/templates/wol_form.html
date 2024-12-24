@@ -145,25 +145,26 @@
   <body>
     <!-- Flash message area -->
     <div class="container mt-3">
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-      {% for category, msg in messages %}
-        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert" id="flash-alert">
-          {{ msg }}
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-      {% endfor %}
-      <!-- Auto-hide after 3 seconds -->
-      <script>
-        setTimeout(function() {
-          const alertEl = document.getElementById('flash-alert');
-          if (alertEl) {
-            alertEl.style.display = 'none';
-          }
-        }, 3000);
-      </script>
-    {% endif %}
-    {% endwith %}
+      {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, msg in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show fixed-flash" role="alert" id="flash-alert">
+            {{ msg }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+        <!-- Auto-hide after 3 seconds -->
+        <script>
+          setTimeout(function() {
+            const alertEl = document.getElementById('flash-alert');
+            if (alertEl) {
+              alertEl.style.opacity = '0'; // Fade out
+              setTimeout(() => alertEl.style.display = 'none', 500); // Hide completely after fade-out
+            }
+          }, 3000);
+        </script>
+      {% endif %}
+      {% endwith %}
     </div>
     <nav class="navbar navbar-light bg-light sticky-top">
       <div class="container">

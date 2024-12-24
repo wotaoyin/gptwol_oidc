@@ -51,3 +51,16 @@
 .clear-button:hover {
   color: #e44444;
 }
+
+.fixed-flash {
+  position: fixed; /* Fix the position to the top */
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1050; /* Ensure it stays above other elements */
+  width: 100%; /* Adjust width to ensure it looks good */
+  max-width: 600px; /* Limit max width for readability */
+  margin: 0 auto;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Add subtle shadow */
+}
