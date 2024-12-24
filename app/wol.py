@@ -10,7 +10,7 @@ cron_filename = '/etc/cron.d/gptwol'
 computer_filename = 'computers.txt'
 
 app = Flask(__name__, static_folder='templates')
-
+app.secret_key = os.environ.get('FLASK_SECRET_KEY') or os.urandom(12)
 
 def load_computers():
     # Load the list of computers from the configuration file
