@@ -1,6 +1,6 @@
 # GPTWOL OIDC
 
-Originally forked from [gptwol by Misterbabou](https://github.com/misterbabou/gptwol), which is licensed under the [![MIT License](https://img.shields.io/github/license/Misterbabou/gptwol.svg?logo=github&logoColor=959DA5)](https://github.com/Misterbabou/gptwol/blob/main/LICENSE.md), this project adds OIDC-based user management functionality and other improvements, and is also licensed under the [MIT License](./LICENSE).
+Originally forked from [gptwol by Misterbabou](https://github.com/misterbabou/gptwol), which is licensed under the [![MIT License](https://img.shields.io/github/license/Misterbabou/gptwol.svg?logo=github&logoColor=959DA5)](https://github.com/Misterbabou/gptwol/blob/main/LICENSE.md), this project adds OIDC-based user management functionality and other improvements, and is also licensed under the [MIT License](./LICENSE.md).
 
 # Original GPTWOL is a simple Wake-On-LAN GUI
 
@@ -8,10 +8,6 @@ Originally forked from [gptwol by Misterbabou](https://github.com/misterbabou/gp
 [![Docker Pulls](https://img.shields.io/docker/pulls/misterbabou/gptwol.svg?logo=docker)](https://hub.docker.com/r/misterbabou/gptwol)
 [![GitHub last commit](https://img.shields.io/github/last-commit/Misterbabou/gptwol?logo=github&logoColor=959DA5)](https://github.com/Misterbabou/gptwol/commits/main)
 ---
-
-## Screenshot 
-
-![gptwol-gui.png](/assets/gptwol-gui.png)
 
 ## Features 
 

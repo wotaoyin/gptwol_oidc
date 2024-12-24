@@ -395,7 +395,7 @@ def wol_send():
         return redirect(url_for('login'))
 
     mac_address = request.form['mac_address']
-    user_computers = load_user_computers_and_flags(user_email)
+    user_computers, user_hide_details, user_cannot_add_computer = load_user_computers_and_flags(user_email)
     computer = next((c for c in user_computers if c['mac_address'] == mac_address), None)
     if not computer:
         return '''
@@ -411,7 +411,7 @@ def wol_send():
         message = 'Computer is Already Awake'
     else:
         send_wol_packet(mac_address)
-        message = 'Magic Packet Sent !'
+        message = 'Magic Packet Sent!'
 
     return f'''
         <script>
