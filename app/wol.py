@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, url_for
+from flask import Flask, request, render_template, redirect, url_for, flash
 import socket
 import struct
 import subprocess
@@ -120,12 +120,8 @@ def add_computer():
 
   # Check if the computer name already exists
   if check_name_exist(name, computers):
-    return '''
-    <script>
-      alert('Computer name already exists');
-      window.history.back();
-    </script>
-    '''
+    flash("Computer name already exists", "danger")
+    return redirect(url_for('wol_form'))
 
   computers.append({'name': name, 'mac_address': mac_address, 'ip_address': ip_address, 'test_type': test_type})
   # Save the updated list of computers to the configuration file
@@ -201,17 +197,12 @@ def wol_send():
     test_type = computer['test_type']
 
     if is_computer_awake(ip_address, test_type):
-        message = 'Computer is Already Awake'
+        flash("Computer is Already Awake", "warning")
     else:
         send_wol_packet(mac_address)
-        message = 'Magic Packet Sent !'
+        flash("Magic Packet Sent!", "success")
 
-    return f'''
-        <script>
-            alert('{message}');
-            window.history.back();
-        </script>
-    '''
+    return redirect(url_for('wol_form'))
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=port)
